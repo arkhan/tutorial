@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_child_view_form" model="ir.ui.view">
+        <field name="name">res.partner.child.view.form</field>
+        <field name="model">res.partner.child</field>
+        <field name="arch" type="xml">
+            <form string="Partner Child">
+                <sheet>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="name" />
+                        <field name="birthday" />               
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="res_partner_child_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.child.view.tree</field>
+        <field name="model">res.partner.child</field>
+        <field name="arch" type="xml">
+            <tree string="Partner Child">
+                <field name="partner_id" />
+                <field name="name" />
+                <field name="birthday" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="res_partner_child_view_search" model="ir.ui.view">
+        <field name="name">res.partner.child.view.search</field>
+        <field name="model">res.partner.child</field>
+        <field name="arch" type="xml">
+            <search string="Partner child">
+                <field name="partner_id" />
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+
+    <record id="res_partner_child_action" model="ir.actions.act_window">
+        <field name="name">Partner Child</field>
+        <field name="res_model">res.partner.child</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="res_partner_child_menu"
+            name="Partner child"
+            action="res_partner_child_action"
+            parent="contacts.menu_contacts"
+            sequence="2"/>
+
+</odoo>
