@@ -1,56 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="res_partner_child_view_form" model="ir.ui.view">
-        <field name="name">res.partner.child.view.form</field>
-        <field name="model">res.partner.child</field>
-        <field name="arch" type="xml">
-            <form string="Partner Child">
-                <sheet>
-                    <group>
-                        <field name="partner_id" />
-                        <field name="name" />
-                        <field name="birthday" />               
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+  <record id="res_partner_child_view_form" model="ir.ui.view">
+    <field name="name">res.partner.child.view.form</field>
+    <field name="model">res.partner.child</field>
+    <field name="arch" type="xml">
+      <form string="Partner Child">
+        <sheet>
+          <group>
+            <field name="partner_id" />
+            <field name="name" />
+            <field name="lastname" />
+            <field name="birthday" required="1" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
 
-    <record id="res_partner_child_view_tree" model="ir.ui.view">
-        <field name="name">res.partner.child.view.tree</field>
-        <field name="model">res.partner.child</field>
-        <field name="arch" type="xml">
-            <tree string="Partner Child">
-                <field name="partner_id" />
-                <field name="name" />
-                <field name="birthday" />
-            </tree>
-        </field>
-    </record>
+  <record id="res_partner_child_view_tree" model="ir.ui.view">
+    <field name="name">res.partner.child.view.tree</field>
+    <field name="model">res.partner.child</field>
+    <field name="arch" type="xml">
+      <tree string="Partner Child">
+        <field name="partner_id" />
+        <field name="name" />
+        <field name="birthday" />
+      </tree>
+    </field>
+  </record>
 
-    <record id="res_partner_child_view_search" model="ir.ui.view">
-        <field name="name">res.partner.child.view.search</field>
-        <field name="model">res.partner.child</field>
-        <field name="arch" type="xml">
-            <search string="Partner child">
-                <field name="partner_id" />
-                <field name="name" />
-            </search>
-        </field>
-    </record>
+  <record id="res_partner_child_view_search" model="ir.ui.view">
+    <field name="name">res.partner.child.view.search</field>
+    <field name="model">res.partner.child</field>
+    <field name="arch" type="xml">
+      <search string="Partner child">
+        <field name="partner_id" />
+        <field name="name" />
+      </search>
+    </field>
+  </record>
 
-    <record id="res_partner_child_action" model="ir.actions.act_window">
-        <field name="name">Partner Child</field>
-        <field name="res_model">res.partner.child</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+  <record id="res_partner_child_action" model="ir.actions.act_window">
+    <field name="name">Partner Child</field>
+    <field name="res_model">res.partner.child</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+  </record>
 
-    <menuitem id="res_partner_child_menu"
+  <menuitem id="res_partner_child_menu"
             name="Partner child"
             action="res_partner_child_action"
             parent="contacts.menu_contacts"
             sequence="2"/>
+
+
+  <!-- res.partner form inherit view -->
+  <record id="view_res_partner_form_inherit" model="ir.ui.view">
+    <field name="name">res.partner.view.form.inherit</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='vat']" position="replace" >
+        <label for="vat" />
+        <div class="o_address_format">
+          <field name="type_vat" class="o_address_city" required="1"/>
+          <span class="oe_read_only">-</span>
+          <field name="vat" class="o_address_state" required="1"/>
+        </div>
+      </xpath>
+      <xpath expr="//notebook" position="inside">
+        <page string="Relatives" >
+          <field name="relative_ids" >
+            <tree string="Relative" editable="top" delete="0">
+              <field name="lastname" />
+              <field name="name" />
+              <field name="birthday" required="1" />
+            </tree>
+          </field>
+        </page>
+      </xpath>
+    </field>
+  </record>
 
 </odoo>
