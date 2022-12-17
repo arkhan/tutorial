@@ -12,8 +12,8 @@
             <field name="name" />
             <field name="lastname" />
             <field name="birthday" required="1" />
-            <field name="birthday_txt" required="1" />
             <field name="age" />
+            <field name="age_txt" />
             <field name="note" widget="html" />
           </group>
         </sheet>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <template id="report_child_content">
+    <t t-call="web.external_layout">
+      <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+      <t t-set="address">
+        <div t-if="doc.vat" class="mt16"><t t-esc="doc.company_id.country_id.vat_label or 'Tax ID'"/>:
+        <span t-esc="doc.vat"/>
+        </div>
+      </t>
+      <div class="page">
+        <h1>
+          <span t-esc="doc.name" />
+        </h1>
+        <h3 t-if="doc.country_id">
+          <span t-field="doc.country_id" />
+        </h3>
+        <span>Relatives</span>
+        <br />
+        <br />
+        <table style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 33%;">
+                Name
+              </th>
+              <th style="width: 33%;">
+                Birthday
+              </th>
+              <th style="width: 33%;">
+                Age
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr t-foreach="doc.relative_ids" t-as="r">
+              <td>
+                <span t-esc="r.name" />
+              </td>
+              <td>
+                <span t-esc="r.birthday" />
+              </td>
+              <td>
+                <span t-esc="r.age" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+        <br />
+        <hr />
+        <span>Relatives SQL</span>
+        <br />
+        <br />
+        <table style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 33%;">
+                Name
+              </th>
+              <th style="width: 33%;">
+                Birthday
+              </th>
+              <th style="width: 33%;">
+                Age
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr t-foreach="doc.get_all_relatives(doc)" t-as="r">
+              <td>
+                <span t-esc="r.get('name')" />
+              </td>
+              <td>
+                <span t-esc="r.get('birthday')" />
+              </td>
+              <td>
+                <span t-esc="r.get('age')" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </t>
+  </template>
+
+  <template id="report_child">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="res_partner_check_vat.report_child_content"
+               t-lang="doc.lang"/>
+        </t>
+    </t>
+</template>
+
+  <report id="action_res_partner_child"
+          string="Partner child"
+          model="res.partner"
+          report_type="qweb-pdf"
+          file="res_partner_check_vat.report_child"
+          name="res_partner_check_vat.report_child" />
+
+
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- res.partner.sri form view -->
+  <record id="view_partner_sri_data_form" model="ir.ui.view">
+    <field name="name">partner.sri.data.view.form</field>
+    <field name="model">res.partner.sri</field>
+    <field name="arch" type="xml">
+      <form string="Get SRI Data">
+          <group>
+            <field name="partner_id" />
+          </group>
+          <footer>
+            <button name="button_complete_data" string="Confirm" class="btn-primary" type="object"/>
+          </footer>
+      </form>
+    </field>
+  </record>
+
+  <act_window id="action_partner_sri_data"
+              name="Get SRI Data"
+              res_model="res.partner.sri"
+              src_model="res.partner"
+              view_id="view_partner_sri_data_form"
+              target="new"
+              context="{'default_partner_id' : active_id }" />
+
+</odoo>

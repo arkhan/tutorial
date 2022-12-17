@@ -9,7 +9,12 @@
     "website": "",
     "images": [],
     "depends": ["contacts"],
-    "data": ["security/ir.model.access.csv", "views/partner.xml"],
+    "data": [
+        "security/ir.model.access.csv",
+        "reports/report.xml",
+        "views/partner.xml",
+        "wizards/partner_get_sri.xml",
+    ],
     "installable": True,
     "application": False,
     "auto_install": False,

@@ -1,3 +1,3 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from . import models, wizards
+from . import partner_get_sri

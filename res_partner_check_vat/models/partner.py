@@ -1,3 +1,5 @@
+import re
+
 from odoo import _, api, fields, models
 from odoo.addons.res_partner_check_vat.models.utils import normalize
 from odoo.exceptions import ValidationError
@@ -15,22 +17,31 @@ class ResPartnerChild(models.Model):
     name = fields.Char(_("Name"), required=True)
     lastname = fields.Char(_("Lastname"))
     birthday = fields.Date(_("Birthday"))
-    birthday_txt = fields.Char("Birthday TEXT")
     appoiment = fields.Datetime(_("Appoiment"), default=fields.Datetime.today())
     age = fields.Float(_("Age"), compute="_get_age", store=True)
+    age_txt = fields.Char("Age TEXT", compute="_get_age", store=True)
     note = fields.Html(_("Note"))
     active = fields.Boolean(default=True)
 
-    @api.depends("birthday", "birthday_txt")
+    @api.depends("birthday")
     def _get_age(self):
         for row in self:
             age = 0
-            if row.birthday or row.birthday_txt:
-                birthday = row.birthday or row.birthday_txt
+            age_txt = ""
+            if row.birthday:
+                birthday = row.birthday
                 if isinstance(birthday, str):
                     birthday = fields.Date.from_string(birthday)
+                query = "SELECT AGE(CURRENT_DATE, '{date}')::TEXT AS age_txt;".format(
+                    date=birthday
+                )
+                self.env.cr.execute(query)
+                query_res = self.env.cr.dictfetchone()
+                if query_res:
+                    age_txt = query_res.get("age_txt", "")
                 age = fields.Date.today().year - birthday.year
             row.age = age
+            row.age_txt = age_txt
         return True
 
     @api.model
@@ -117,3 +128,19 @@ class ResPartner(models.Model):
                         )
                     )
                 )
+
+    @api.model
+    def get_all_relatives(self, partner):
+        res = []
+        if partner:
+            query = """
+            SELECT rp.name,
+                   rp.birthday,
+                   age(CURRENT_DATE, rp.birthday)::TEXT AS age
+              FROM res_partner_child rp WHERE partner_id = {partner};
+            """.format(
+                partner=partner.id
+            )
+            self.env.cr.execute(query)
+            res = self.env.cr.dictfetchall()
+        return res
