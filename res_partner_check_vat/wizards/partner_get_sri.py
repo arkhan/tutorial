@@ -25,9 +25,6 @@ class PartnerSRIData(models.TransientModel):
 
     @api.model
     def get_sri_data(self, ruc):
-        import wdb
-
-        wdb.set_trace()
         data = get(BASE_URL + ruc)
         bs = BeautifulSoup(data.text, "html.parser")
         json_data = html_to_json.convert(

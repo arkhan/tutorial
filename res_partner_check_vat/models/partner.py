@@ -144,3 +144,14 @@ class ResPartner(models.Model):
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()
         return res
+
+    def button_complete_data(self):
+        if self.type_vat == "ruc":
+            vat = self.vat
+            partner_data = self.env["res.partner.sri"].get_sri_data(vat)
+            vals = {}
+            if vat in partner_data:
+                vals.update({"name": partner_data[vat].get("Razon Social")})
+            if vals:
+                self.write(vals)
+        return True
